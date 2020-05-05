@@ -322,10 +322,11 @@ template("msvc_toolchain") {
       dllname = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
       libname = "${dllname}.lib"  # e.g. foo.dll.lib
       pdbname = "${dllname}.pdb"
+      pdbstrippedname = "${dllname}.stripped.pdb"
       rspfile = "${dllname}.rsp"
       pool = "//build/toolchain:link_pool($default_toolchain)"
 
-      command = "$linker_wrapper$link$cc_linkflags /OUT:\"$dllname\" /nologo ${sys_lib_flags}/IMPLIB:\"$libname\" /DLL /PDB:\"$pdbname\" \"@$rspfile\""
+      command = "$linker_wrapper$link$cc_linkflags /OUT:\"$dllname\" /nologo ${sys_lib_flags}/IMPLIB:\"$libname\" /DLL /PDB:\"$pdbname\" /PDBSTRIPPED:\"$pdbstrippedname\" \"@$rspfile\""
 
       default_output_extension = ".dll"
       default_output_dir = "{{root_out_dir}}"
@@ -357,10 +358,11 @@ template("msvc_toolchain") {
       # E.g. "foo.dll":
       dllname = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
       pdbname = "${dllname}.pdb"
+      pdbstrippedname = "${dllname}.stripped.pdb"
       rspfile = "${dllname}.rsp"
       pool = "//build/toolchain:link_pool($default_toolchain)"
 
-      command = "$linker_wrapper$link$cc_linkflags /OUT:\"$dllname\" /nologo ${sys_lib_flags}/DLL /PDB:\"$pdbname\" \"@$rspfile\""
+      command = "$linker_wrapper$link$cc_linkflags /OUT:\"$dllname\" /nologo ${sys_lib_flags}/DLL /PDB:\"$pdbname\" /PDBSTRIPPED:\"$pdbstrippedname\" \"@$rspfile\""
 
       default_output_extension = ".dll"
       default_output_dir = "{{root_out_dir}}"
@@ -380,10 +382,11 @@ template("msvc_toolchain") {
     tool("link") {
       exename = "{{output_dir}}/{{target_output_name}}{{output_extension}}"
       pdbname = "$exename.pdb"
+      pdbstrippedname = "$exename.stripped.pdb"
       rspfile = "$exename.rsp"
       pool = "//build/toolchain:link_pool($default_toolchain)"
 
-      command = "$linker_wrapper$link$cc_linkflags /OUT:\"$exename\" /nologo ${sys_lib_flags} /PDB:\"$pdbname\" \"@$rspfile\""
+      command = "$linker_wrapper$link$cc_linkflags /OUT:\"$exename\" /nologo ${sys_lib_flags} /PDB:\"$pdbname\" /PDBSTRIPPED:\"$pdbstrippedname\" \"@$rspfile\""
 
       if (linkrepro_root_dir != "") {
         # Create the directory that will receive the link repro for this target
