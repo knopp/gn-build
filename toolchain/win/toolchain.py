@@ -263,11 +263,12 @@ def DetectVisualStudioPath(version_as_year):
       except subprocess.CalledProcessError:
         pass
 
-    root_path = r'C:\Program Files (x86)\Microsoft Visual Studio\\' + version_as_year
-    for edition in ['Professional', 'Community', 'Enterprise', 'BuildTools']:
-      path = os.environ.get('vs{}_install'.format(version_as_year), os.path.join(root_path, edition))
-      if os.path.exists(path):
-        return path
+    for root_path in [r'C:\Program Files (x86)\Microsoft Visual Studio\\' + version_as_year,
+                      r'C:\Program Files\Microsoft Visual Studio\\' + version_as_year]:
+      for edition in ['Preview', 'Professional', 'Community', 'Enterprise', 'BuildTools']:
+        path = os.environ.get('vs{}_install'.format(version_as_year), os.path.join(root_path, edition))
+        if os.path.exists(path):
+          return path
   else:
     version = year_to_version[version_as_year]
     keys = [r'HKLM\Software\Microsoft\VisualStudio\%s' % version,
