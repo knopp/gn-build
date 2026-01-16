@@ -1142,7 +1142,7 @@ config("lto") {
       # resource allocation scheme, but should be good enough.
       if (use_lld) {
         ldflags += [ "-Wl,--thinlto-jobs=8" ]
-      } else {
+      } else if (is_linux) {
         ldflags += [ "-Wl,-plugin-opt,jobs=8" ]
       }
     } else {
